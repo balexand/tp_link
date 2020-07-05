@@ -30,23 +30,10 @@ defmodule TpLink.Discovery do
       add_membership: {@multicast_ip, {0, 0, 0, 0}},
       broadcast: true,
       ip: {0, 0, 0, 0},
-      # multicast_if: {0, 0, 0, 0},
-      multicast_loop: false,
+      multicast_loop: true,
       multicast_ttl: 1,
       reuseaddr: true
     ]
-
-    # peerage
-    # udp_options = [
-    #   :binary,
-    #   active: 10,
-    #   add_membership: {@multicast_ip, {0, 0, 0, 0}},
-    #   broadcast: true,
-    #   ip: @ip,
-    #   multicast_loop: true,
-    #   multicast_ttl: @ttl,
-    #   reuseaddr: true
-    # ]
 
     {:ok, socket} = :gen_udp.open(@port, udp_options)
 
