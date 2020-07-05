@@ -1,11 +1,18 @@
 defmodule TpLink.Discovery do
   use GenServer
 
+  alias TpLink.Message
+
   # @multicast_ip {224, 1, 1, 1}
   @multicast_ip {255, 255, 255, 255}
   @port 9999
 
-  @discovery_msg Base.decode64!("0PKB+Iv/mvfV75S20bTAn+yV5o/hh+jK8Iv2i6eF4I3onPmLqZPoyq3IvOOR9JX5jeSJ7M70j/KPo4Hyn/6M+JT9m/7QudaijO+A7YDvga/Kp8K206GDucLgh+KWybvev9OnzqPG5N6l2KXY")
+  @discovery_msg %{
+                   emeter: %{get_realtime: %{}},
+                   "smartlife.iot.common.emeter": %{get_realtime: %{}},
+                   system: %{get_sysinfo: %{}}
+                 }
+                 |> Message.encode()
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
@@ -55,9 +62,11 @@ defmodule TpLink.Discovery do
 
   @impl GenServer
   def handle_info({:udp, socket, ip, port, data}, state) do
-    # when we popped one message we allow one more to be buffered
     :inet.setopts(socket, active: 1)
-    IO.inspect(["received", ip, port, data == @discovery_msg])
+
+    message = Message.decode(data)
+    IO.inspect(["received", ip, port, message])
+
     {:noreply, state}
   end
 end
