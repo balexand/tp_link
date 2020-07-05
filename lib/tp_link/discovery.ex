@@ -7,12 +7,7 @@ defmodule TpLink.Discovery do
   @multicast_ip {255, 255, 255, 255}
   @port 9999
 
-  @discovery_msg %{
-                   emeter: %{get_realtime: %{}},
-                   "smartlife.iot.common.emeter": %{get_realtime: %{}},
-                   system: %{get_sysinfo: %{}}
-                 }
-                 |> Message.encode()
+  @discovery_msg %{system: %{get_sysinfo: %{}}} |> Message.encode()
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
@@ -51,9 +46,16 @@ defmodule TpLink.Discovery do
   def handle_info({:udp, socket, ip, port, data}, state) do
     :inet.setopts(socket, active: 1)
 
-    message = Message.decode(data)
-    IO.inspect(["received", ip, port, message])
+    if !from_me?(ip) do
+      message = Message.decode(data)
+      IO.inspect(["received", ip, port, message])
+    end
 
     {:noreply, state}
+  end
+
+  defp from_me?(ip) do
+    {:ok, from_ips} = :inet.getif()
+    Enum.any?(from_ips, fn {from_ip, _, _} -> from_ip == ip end)
   end
 end
