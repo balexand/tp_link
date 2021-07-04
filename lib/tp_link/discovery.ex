@@ -36,7 +36,7 @@ defmodule TpLink.Discovery do
   end
 
   @impl GenServer
-  def handle_call(:discover, _form, %{socket: socket} = state) do
+  def handle_call(:discover, _from, %{socket: socket} = state) do
     :ok = :gen_udp.send(socket, @multicast_ip, @port, [@discovery_msg])
 
     {:reply, :ok, state}
