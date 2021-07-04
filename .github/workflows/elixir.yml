@@ -8,6 +8,9 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
 
+    env:
+      MIX_ENV: test
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Elixir
@@ -23,5 +26,9 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
+    - name: Compile
+      run: mix compile --warnings-as-errors
     - name: Run tests
-      run: mix test
+      run: mix test --warnings-as-errors
+    - name: Check format
+      run: mix format --check-formatted
