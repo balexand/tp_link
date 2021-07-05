@@ -1,4 +1,6 @@
 defmodule TpLink.Cloud do
+  alias TpLink.Cloud.Token
+
   @base_url "https://wap.tplinkcloud.com"
 
   def auth!(username, password) do
@@ -20,6 +22,18 @@ defmodule TpLink.Cloud do
     {:ok, %Finch.Response{body: body, status: 200}} =
       Finch.build(:post, url, headers(), Jason.encode!(payload)) |> Finch.request(TpLink.Finch)
 
+    %{"error_code" => 0, "result" => %{"token" => token} = result} = Jason.decode!(body)
+    %Token{result: result, token: token, uuid: uuid}
+  end
+
+  def list_devices(%Token{} = token) do
+    payload = %{method: "getDeviceList"}
+
+    url = "#{@base_url}?#{URI.encode_query(params(token))}"
+
+    {:ok, %Finch.Response{body: body, status: 200}} =
+      Finch.build(:post, url, headers(), Jason.encode!(payload)) |> Finch.request(TpLink.Finch)
+
     %{"error_code" => 0, "result" => result} = Jason.decode!(body)
     result
   end
@@ -31,14 +45,19 @@ defmodule TpLink.Cloud do
     ]
   end
 
-  defp params(opts) do
-    %{
+  defp params(%Token{token: token, uuid: uuid}) do
+    params(token: token, uuid: uuid)
+    |> Keyword.put(:token, token)
+  end
+
+  defp params(opts) when is_list(opts) do
+    [
       appName: "Kasa_Android",
       termID: Keyword.fetch!(opts, :uuid),
       appVer: "1.4.4.607",
       ospf: "Android+6.0.1",
       netType: "wifi",
       locale: "es_ES"
-    }
+    ]
   end
 end
