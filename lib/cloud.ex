@@ -23,14 +23,6 @@ defmodule TpLink.Cloud do
     %Token{result: result, token: token, uuid: uuid}
   end
 
-  def get_system_info(token, device) do
-    %{
-      system: %{get_sysinfo: nil},
-      emeter: %{get_realtime: nil}
-    }
-    |> pass_through_request(token, device)
-  end
-
   def list_devices(%Token{} = token) do
     %{method: "getDeviceList"}
     |> request(token)
