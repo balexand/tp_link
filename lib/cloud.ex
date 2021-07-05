@@ -26,6 +26,14 @@ defmodule TpLink.Cloud do
     %Token{result: result, token: token, uuid: uuid}
   end
 
+  def get_system_info(token, device) do
+    %{
+      system: %{get_sysinfo: nil},
+      emeter: %{get_realtime: nil}
+    }
+    |> pass_through_request(token, device)
+  end
+
   def list_devices(%Token{} = token) do
     payload = %{method: "getDeviceList"}
 
@@ -34,8 +42,26 @@ defmodule TpLink.Cloud do
     {:ok, %Finch.Response{body: body, status: 200}} =
       Finch.build(:post, url, headers(), Jason.encode!(payload)) |> Finch.request(TpLink.Finch)
 
-    %{"error_code" => 0, "result" => result} = Jason.decode!(body)
-    result
+    %{"error_code" => 0, "result" => %{"deviceList" => device_list}} = Jason.decode!(body)
+    device_list
+  end
+
+  def pass_through_request(command, %Token{} = token, %{"deviceId" => device_id}) do
+    url = "#{@base_url}?#{URI.encode_query(params(token))}"
+
+    payload = %{
+      method: "passthrough",
+      params: %{
+        deviceId: device_id,
+        requestData: Jason.encode!(command)
+      }
+    }
+
+    {:ok, %Finch.Response{body: body, status: 200}} =
+      Finch.build(:post, url, headers(), Jason.encode!(payload)) |> Finch.request(TpLink.Finch)
+
+    %{"error_code" => 0, "result" => %{"responseData" => responseJSON}} = Jason.decode!(body)
+    Jason.decode!(responseJSON)
   end
 
   defp headers do
