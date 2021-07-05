@@ -6,23 +6,20 @@ defmodule TpLink.Cloud do
   def auth!(username, password) do
     uuid = UUID.uuid4()
 
-    payload = %{
-      method: "login",
-      url: @base_url,
-      params: %{
-        appType: "Kasa_Android",
-        cloudPassword: password,
-        cloudUserName: username,
-        terminalUUID: uuid
+    %{"token" => token} =
+      result =
+      %{
+        method: "login",
+        url: @base_url,
+        params: %{
+          appType: "Kasa_Android",
+          cloudPassword: password,
+          cloudUserName: username,
+          terminalUUID: uuid
+        }
       }
-    }
+      |> request(uuid: uuid)
 
-    url = "#{@base_url}?#{URI.encode_query(params(uuid: uuid))}"
-
-    {:ok, %Finch.Response{body: body, status: 200}} =
-      Finch.build(:post, url, headers(), Jason.encode!(payload)) |> Finch.request(TpLink.Finch)
-
-    %{"error_code" => 0, "result" => %{"token" => token} = result} = Jason.decode!(body)
     %Token{result: result, token: token, uuid: uuid}
   end
 
@@ -35,33 +32,33 @@ defmodule TpLink.Cloud do
   end
 
   def list_devices(%Token{} = token) do
-    payload = %{method: "getDeviceList"}
-
-    url = "#{@base_url}?#{URI.encode_query(params(token))}"
-
-    {:ok, %Finch.Response{body: body, status: 200}} =
-      Finch.build(:post, url, headers(), Jason.encode!(payload)) |> Finch.request(TpLink.Finch)
-
-    %{"error_code" => 0, "result" => %{"deviceList" => device_list}} = Jason.decode!(body)
-    device_list
+    %{method: "getDeviceList"}
+    |> request(token)
+    |> Map.fetch!("deviceList")
   end
 
   def pass_through_request(command, %Token{} = token, %{"deviceId" => device_id}) do
-    url = "#{@base_url}?#{URI.encode_query(params(token))}"
-
-    payload = %{
+    %{
       method: "passthrough",
       params: %{
         deviceId: device_id,
         requestData: Jason.encode!(command)
       }
     }
+    |> request(token)
+    |> Map.fetch!("responseData")
+    |> Jason.decode!()
+  end
+
+  defp request(%{} = payload, opts) do
+    url = "#{@base_url}?#{URI.encode_query(params(opts))}"
 
     {:ok, %Finch.Response{body: body, status: 200}} =
-      Finch.build(:post, url, headers(), Jason.encode!(payload)) |> Finch.request(TpLink.Finch)
+      Finch.build(:post, url, headers(), Jason.encode!(payload))
+      |> Finch.request(TpLink.Finch)
 
-    %{"error_code" => 0, "result" => %{"responseData" => responseJSON}} = Jason.decode!(body)
-    Jason.decode!(responseJSON)
+    %{"error_code" => 0, "result" => result} = Jason.decode!(body)
+    result
   end
 
   defp headers do
