@@ -3,29 +3,32 @@ defmodule TpLink.Cloud do
 
   @base_url "https://wap.tplinkcloud.com"
 
-  def auth!(username, password) do
+  def auth(username, password) do
     uuid = UUID.uuid4()
 
-    %{"token" => token} =
-      result =
-      %{
-        method: "login",
-        url: @base_url,
-        params: %{
-          appType: "Kasa_Android",
-          cloudPassword: password,
-          cloudUserName: username,
-          terminalUUID: uuid
-        }
+    %{
+      method: "login",
+      url: @base_url,
+      params: %{
+        appType: "Kasa_Android",
+        cloudPassword: password,
+        cloudUserName: username,
+        terminalUUID: uuid
       }
-      |> request(uuid: uuid)
+    }
+    |> request(uuid: uuid)
+    |> case do
+      %{"error_code" => 0, "result" => %{"token" => token}} = result ->
+        {:ok, %Token{result: result, token: token, uuid: uuid}}
 
-    %Token{result: result, token: token, uuid: uuid}
+      result ->
+        {:error, result}
+    end
   end
 
   def list_devices(%Token{} = token) do
     %{method: "getDeviceList"}
-    |> request(token)
+    |> request!(token)
     |> Map.fetch!("deviceList")
   end
 
@@ -37,9 +40,15 @@ defmodule TpLink.Cloud do
         requestData: Jason.encode!(command)
       }
     }
-    |> request(token)
+    |> request!(token)
     |> Map.fetch!("responseData")
     |> Jason.decode!()
+  end
+
+  defp request!(payload, opts) do
+    case request(payload, opts) do
+      %{"error_code" => 0, "result" => result} -> result
+    end
   end
 
   defp request(%{} = payload, opts) do
@@ -49,8 +58,7 @@ defmodule TpLink.Cloud do
       Finch.build(:post, url, headers(), Jason.encode!(payload))
       |> Finch.request(TpLink.Finch)
 
-    %{"error_code" => 0, "result" => result} = Jason.decode!(body)
-    result
+    Jason.decode!(body)
   end
 
   defp headers do
