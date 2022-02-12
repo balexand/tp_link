@@ -1,3 +1,5 @@
+# FIXME move to Local module
+
 defmodule TpLink.Message do
   def decode(binary) when is_binary(binary) do
     {decoded, _} =

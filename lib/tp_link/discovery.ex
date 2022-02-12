@@ -1,3 +1,5 @@
+# FIXME refactor and move
+
 defmodule TpLink.Discovery do
   use GenServer
 
