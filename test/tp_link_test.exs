@@ -12,7 +12,8 @@ defmodule TpLinkTest do
 
   test "local_device" do
     assert TpLink.local_device({192, 168, 0, 10}) == %TpLink.Local.LocalDevice{
-             host: {192, 168, 0, 10}
+             host: {192, 168, 0, 10},
+             opts: [timeout: 5000]
            }
   end
 end
