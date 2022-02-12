@@ -3,16 +3,14 @@ defmodule TpLink do
   Documentation for `TpLink`.
   """
 
+  alias TpLink.Cloud.{CloudDevice, Session}
+
+  defdelegate call(device, command), to: TpLink.Device
+
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> TpLink.hello()
-      :world
-
+  Creates a device struct for a device that is accessed through the cloud.
   """
-  def hello do
-    :world
+  def cloud_device(%Session{} = session, device_id) when is_binary(device_id) do
+    %CloudDevice{device_id: device_id, session: session}
   end
 end

@@ -35,11 +35,14 @@ defmodule TpLink.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:elixir_uuid, "~> 1.2"},
       {:finch, "~> 0.10.2"},
       {:jason, "~> 1.3"},
-      {:recase, "~> 0.7.0"}
+      {:recase, "~> 0.7.0"},
+
+      # dev/test deps
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false}
     ]
   end
 end

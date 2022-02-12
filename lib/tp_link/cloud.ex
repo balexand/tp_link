@@ -7,9 +7,31 @@ defmodule TpLink.Cloud do
 
   @url "https://wap.tplinkcloud.com"
 
+  # Call this via `TpLink.call/2`
+  @doc false
+  def call(%Session{} = session, device_id, command) when is_binary(device_id) do
+    body = %{
+      method: "passthrough",
+      params: %{
+        deviceId: device_id,
+        requestData: Jason.encode!(command)
+      }
+    }
+
+    with {:ok, result} <- request(session, body) do
+      response_data =
+        result
+        |> Map.fetch!("response_data")
+        |> Jason.decode!()
+        |> Recase.Enumerable.convert_keys(&Recase.to_snake/1)
+
+      {:ok, response_data}
+    end
+  end
+
   def list_devices(%Session{} = session) do
     with {:ok, result} <- request(session, %{method: "getDeviceList"}) do
-      {:ok, result.device_list}
+      {:ok, Map.fetch!(result, "device_list")}
     end
   end
 
@@ -29,21 +51,10 @@ defmodule TpLink.Cloud do
     with {:ok, result} <- request(nil, body) do
       {:ok,
        %Session{
-         account_id: result.account_id,
-         country_code: result.country_code,
-         email: result.email,
-         registered_at: parse_datetime(result.reg_time),
-         token: result.token,
+         token: Map.fetch!(result, "token"),
          uuid: uuid
        }}
     end
-  end
-
-  defp parse_datetime(nil), do: nil
-
-  defp parse_datetime(string) do
-    {:ok, datetime, 0} = DateTime.from_iso8601(string <> "Z")
-    datetime
   end
 
   defp request(session, %{} = body) do
@@ -60,7 +71,7 @@ defmodule TpLink.Cloud do
 
     case Jason.decode!(body) do
       %{"error_code" => 0, "result" => result} ->
-        {:ok, Recase.Enumerable.atomize_keys(result, &Recase.to_snake/1)}
+        {:ok, Recase.Enumerable.convert_keys(result, &Recase.to_snake/1)}
 
       %{"error_code" => code, "msg" => msg} ->
         {:error, %{code: code, message: msg}}

@@ -1,3 +1,5 @@
+# FIXME refactor and move
+
 defmodule TpLink.Discovery do
   use GenServer
 
@@ -38,6 +40,12 @@ defmodule TpLink.Discovery do
   @impl GenServer
   def handle_call(:discover, _from, %{socket: socket} = state) do
     :ok = :gen_udp.send(socket, @multicast_ip, @port, [@discovery_msg])
+
+    {:reply, :ok, state}
+  end
+
+  def handle_call({:call, ip, message}, _from, %{socket: socket} = state) do
+    :ok = :gen_udp.send(socket, ip, @port, [message])
 
     {:reply, :ok, state}
   end
