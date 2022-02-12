@@ -1,7 +1,7 @@
-defmodule TpLink.MessageTest do
+defmodule TpLink.Local.MessageTest do
   use ExUnit.Case, async: true
 
-  alias TpLink.Message
+  alias TpLink.Local.Message
 
   test "decode" do
     assert %{"system" => %{"set_relay_state" => %{"state" => 1}}} ==

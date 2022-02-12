@@ -1,6 +1,7 @@
-# FIXME move to Local module
+defmodule TpLink.Local.Message do
+  # Encodes/decodes messages in the format expected when calling TP-Link devices over the LAN.
+  @moduledoc false
 
-defmodule TpLink.Message do
   def decode(binary) when is_binary(binary) do
     {decoded, _} =
       binary
