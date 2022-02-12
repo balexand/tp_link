@@ -20,9 +20,9 @@ defmodule TpLink.Local.LocalDevice do
 
       :ok = :gen_udp.close(socket)
 
-      # There is a slight chance that the response packet arrived after a timeout or that the
-      # device sent more than one reponse packet. This will ensure that stray messages are not
-      # left in the current process's mailbox.
+      # There is a slight chance that a response packet arrived after a timeout or that the device
+      # sent more than one reponse packet. This will ensure that stray messages are not left in
+      # the current process's mailbox.
       flush(socket)
 
       result
