@@ -1,4 +1,5 @@
 defmodule TpLink.Local.LocalDevice do
+  # Device to be called via the local Wifi network.
   @moduledoc false
 
   defstruct [:host, :opts]

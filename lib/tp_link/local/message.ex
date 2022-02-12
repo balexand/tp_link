@@ -1,6 +1,6 @@
 defmodule TpLink.Local.Message do
-  @moduledoc false
   # Encodes/decodes messages in the format expected when calling TP-Link devices over the LAN.
+  @moduledoc false
 
   def decode(binary) when is_binary(binary) do
     {decoded, _} =
