@@ -3,8 +3,7 @@ defmodule TpLink do
   Documentation for `TpLink`.
   """
 
-  alias TpLink.Cloud.Session
-  alias TpLink.Device.CloudDevice
+  alias TpLink.Cloud.{CloudDevice, Session}
 
   defdelegate call(device, command), to: TpLink.Device
 
