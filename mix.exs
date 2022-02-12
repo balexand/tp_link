@@ -27,7 +27,8 @@ defmodule TpLink.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:crypto, :logger],
+      mod: {TpLink.Application, []}
     ]
   end
 
@@ -35,7 +36,10 @@ defmodule TpLink.MixProject do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:jason, "~> 1.2"}
+      {:elixir_uuid, "~> 1.2"},
+      {:finch, "~> 0.10.2"},
+      {:jason, "~> 1.3"},
+      {:recase, "~> 0.7.0"}
     ]
   end
 end
