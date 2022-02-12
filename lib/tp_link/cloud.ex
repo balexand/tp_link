@@ -7,7 +7,9 @@ defmodule TpLink.Cloud do
 
   @url "https://wap.tplinkcloud.com"
 
-  def call(%{} = command, %Session{} = session, device_id) when is_binary(device_id) do
+  # Call this via `TpLink.call/2`
+  @doc false
+  def call(%Session{} = session, device_id, command) when is_binary(device_id) do
     body = %{
       method: "passthrough",
       params: %{
@@ -17,7 +19,12 @@ defmodule TpLink.Cloud do
     }
 
     with {:ok, result} <- request(session, body) do
-      {:ok, Jason.decode!(result.response_data)}
+      response_data =
+        result.response_data
+        |> Jason.decode!()
+        |> Recase.Enumerable.convert_keys(&Recase.to_snake/1)
+
+      {:ok, response_data}
     end
   end
 

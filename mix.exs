@@ -6,7 +6,7 @@ defmodule TpLink.MixProject do
   def project do
     [
       app: :tp_link,
-      description: "Interact with TP-Link/Kasa devices via the cloud or local network.",
+      description: "Interact with TP-Link/Kasa devices via the cloud.",
       version: @version,
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
@@ -35,6 +35,7 @@ defmodule TpLink.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:elixir_uuid, "~> 1.2"},
       {:finch, "~> 0.10.2"},
