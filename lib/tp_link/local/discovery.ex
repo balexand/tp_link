@@ -71,6 +71,8 @@ defmodule TpLink.Local.DiscoveryServer do
     state =
       case Message.decode(data) do
         %{"system" => %{"get_sysinfo" => %{} = system_info}} ->
+          system_info = Recase.Enumerable.convert_keys(system_info, &Recase.to_snake/1)
+
           %{state | devices: Map.put(state.devices, ip, system_info)}
 
         resp ->
