@@ -3,7 +3,7 @@
 defmodule TpLink.Discovery do
   use GenServer
 
-  alias TpLink.Message
+  alias TpLink.Local.Message
 
   # @multicast_ip {224, 1, 1, 1}
   @multicast_ip {255, 255, 255, 255}
