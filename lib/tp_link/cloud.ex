@@ -56,7 +56,7 @@ defmodule TpLink.Cloud do
 
     {:ok, %Finch.Response{body: body, status: 200}} =
       Finch.build(:post, url, headers, Jason.encode!(body))
-      |> Finch.request(TpLinkCloud.Finch)
+      |> Finch.request(TpLink.Finch)
 
     case Jason.decode!(body) do
       %{"error_code" => 0, "result" => result} ->
