@@ -1,4 +1,14 @@
 defmodule TpLink.Local.DiscoveryServer do
+  @moduledoc """
+  A `GenServer` that discovers TP-Link devices on the local network. It works by periodically
+  sending multicast UDP packets to all devices on the network and listening for responses.
+
+  Once discovered, a device will remain in the list indefinitely even if it goes offline. This may
+  change in a future release. At this time, I (@balexand) don't have any need for more
+  sophisticated discovery functionality. Pleaes submit a pull-requeset or feature request if you
+  need additional features.
+  """
+
   use GenServer
 
   alias TpLink.Local.Message
@@ -11,6 +21,7 @@ defmodule TpLink.Local.DiscoveryServer do
   @discovery_msg %{system: %{get_sysinfo: %{}}} |> Message.encode()
 
   defmodule State do
+    @moduledoc false
     defstruct devices: %{}, socket: nil
   end
 
@@ -18,10 +29,21 @@ defmodule TpLink.Local.DiscoveryServer do
   # Client API
   ##
 
+  @doc """
+  Starts the server. See `GenServer.start_link/3`.
+  """
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
+  @doc """
+  Stops the server. See `GenServer.stop/1`.
+  """
+  def stop(pid), do: GenServer.stop(pid)
+
+  @doc """
+  Returns a list of devices that have been discovered by the server.
+  """
   def list_devices(pid) do
     GenServer.call(pid, :list_devices)
     |> Enum.map(fn {ip, system_info} ->

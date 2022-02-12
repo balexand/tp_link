@@ -1,4 +1,6 @@
 defmodule TpLink.Local.LocalDevice do
+  @moduledoc false
+
   defstruct [:host, :opts]
 
   defimpl TpLink.Device do

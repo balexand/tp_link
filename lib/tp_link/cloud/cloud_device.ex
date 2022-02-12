@@ -1,4 +1,6 @@
 defmodule TpLink.Cloud.CloudDevice do
+  @moduledoc false
+
   defstruct [:device_id, :session]
 
   defimpl TpLink.Device do

@@ -6,6 +6,9 @@ defmodule TpLink do
   alias TpLink.Cloud.{CloudDevice, Session}
   alias TpLink.Local.LocalDevice
 
+  @doc """
+  FIXME
+  """
   defdelegate call(device, command), to: TpLink.Device
 
   @doc """
