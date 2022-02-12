@@ -1,13 +1,26 @@
 defmodule TpLink.MixProject do
   use Mix.Project
 
+  @version "0.0.1"
+
   def project do
     [
       app: :tp_link,
-      version: "0.1.0",
-      elixir: "~> 1.10",
+      description: "Interact with TP-Link/Kasa devices via the cloud or local network.",
+      version: @version,
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      package: [
+        licenses: ["MIT"],
+        links: %{"GitHub" => "https://github.com/balexand/tp_link"}
+      ],
+      docs: [
+        extras: ["README.md"],
+        main: "readme",
+        source_ref: "v#{@version}",
+        source_url: "https://github.com/balexand/tp_link"
+      ]
     ]
   end
 
@@ -21,8 +34,7 @@ defmodule TpLink.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:jason, "~> 1.2"}
     ]
   end
