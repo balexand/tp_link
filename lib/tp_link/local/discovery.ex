@@ -35,7 +35,7 @@ defmodule TpLink.Local.DiscoveryServer do
 
   @impl GenServer
   def init(:ok) do
-    Process.send_after(self(), :broadcast, @interval)
+    send(self(), :broadcast)
 
     udp_options = [
       :binary,
