@@ -4,9 +4,7 @@ defmodule TpLink.Local.DiscoveryServer do
   sending multicast UDP packets to all devices on the network and listening for responses.
 
   Once discovered, a device will remain in the list indefinitely even if it goes offline. This may
-  change in a future release. At this time, I (@balexand) don't have any need for more
-  sophisticated discovery functionality. Pleaes submit a pull-requeset or feature request if you
-  need additional features.
+  change in a future release of this library.
   """
 
   use GenServer

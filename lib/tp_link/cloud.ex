@@ -1,6 +1,6 @@
 defmodule TpLink.Cloud do
   @moduledoc """
-  Documentation for `TpLink.Cloud`.
+  For working with devices via [tplinkcloud.com](https://www.tplinkcloud.com/).
   """
 
   alias TpLink.Cloud.Session
@@ -29,12 +29,19 @@ defmodule TpLink.Cloud do
     end
   end
 
+  @doc """
+  Returns a list of available devices.
+  """
   def list_devices(%Session{} = session) do
     with {:ok, result} <- request(session, %{method: "getDeviceList"}) do
       {:ok, Map.fetch!(result, "device_list")}
     end
   end
 
+  @doc """
+  Authenticates with TP-Link Cloud. Use the same username and password that you use to sign in to
+  [tplinkcloud.com](https://www.tplinkcloud.com/).
+  """
   def login(username, password) do
     uuid = UUID.uuid4()
 

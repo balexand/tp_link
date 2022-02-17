@@ -1,7 +1,7 @@
 defmodule TpLink.Local do
   @moduledoc """
   For working with devices directly on the local network. Functions in this module will only work
-  when called on a device that is connected to the same local network as the TP-Link devices.
+  when called from a device that is connected to the same local network as the TP-Link device.
   """
 
   alias TpLink.Local.DiscoveryServer
@@ -20,7 +20,6 @@ defmodule TpLink.Local do
   ## Options
 
   #{NimbleOptions.docs(@list_devices_options_schema)}
-
   """
   def list_devices(opts \\ []) do
     opts = NimbleOptions.validate!(opts, @list_devices_options_schema)
@@ -33,6 +32,7 @@ defmodule TpLink.Local do
 
     :ok = DiscoveryServer.stop(pid)
 
-    devices
+    # return error tuple for consistency with TpLink.Cloud.list_devices
+    {:ok, devices}
   end
 end

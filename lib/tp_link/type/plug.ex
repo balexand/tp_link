@@ -1,4 +1,11 @@
 defmodule TpLink.Type.Plug do
+  @moduledoc """
+  For working with smart plug devices.
+  """
+
+  @doc """
+  Returns the system info.
+  """
   def get_system_info(device) do
     command = %{
       system: %{get_sysinfo: nil}
@@ -9,6 +16,9 @@ defmodule TpLink.Type.Plug do
     end
   end
 
+  @doc """
+  Turns a switch on or off.
+  """
   def set_relay_state(device, value) when is_boolean(value) do
     command = %{
       system: %{set_relay_state: %{state: boolean_to_number(value)}}
