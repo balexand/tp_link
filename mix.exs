@@ -36,7 +36,7 @@ defmodule TpLink.MixProject do
   defp deps do
     [
       {:elixir_uuid, "~> 1.2"},
-      {:finch, "~> 0.10.2"},
+      {:finch, "~> 0.12.0"},
       {:jason, "~> 1.3"},
       {:nimble_options, "~> 0.3.0 or ~> 0.4.0"},
       {:recase, "~> 0.7.0"},
