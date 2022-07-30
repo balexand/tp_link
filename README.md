@@ -12,7 +12,7 @@ The package can be installed by adding `tp_link` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:tp_link, "~> 0.1.0"}
+    {:tp_link, "~> 0.2"}
   ]
 end
 ```
