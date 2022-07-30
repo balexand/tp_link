@@ -1,6 +1,6 @@
 # TpLink
 
-[![Package](https://img.shields.io/badge/-Package-important)](https://hex.pm/packages/tp_link) [![Documentation](https://img.shields.io/badge/-Documentation-blueviolet)](https://hexdocs.pm/tp_link)
+[![Package](https://img.shields.io/hexpm/v/tp_link.svg)](https://hex.pm/packages/tp_link) [![Documentation](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/tp_link) ![CI](https://github.com/balexand/tp_link/actions/workflows/elixir.yml/badge.svg)
 
 Client library for interacting with Kasa/TP-Link smart home devices via either tplinkcloud.com or
 directly over the local network (no Internet connection required).
