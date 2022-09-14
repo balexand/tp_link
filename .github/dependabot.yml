@@ -8,6 +8,6 @@ updates:
 - package-ecosystem: mix
   directory: "/"
   schedule:
-    interval: daily
-    time: "12:00"
+    interval: weekly
+    day: "saturday"
   open-pull-requests-limit: 10
