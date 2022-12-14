@@ -4,19 +4,6 @@ defmodule TpLink.Type.Plug do
   """
 
   @doc """
-  Returns the system info.
-  """
-  def get_system_info(device) do
-    command = %{
-      system: %{get_sysinfo: nil}
-    }
-
-    with {:ok, result} <- TpLink.call(device, command) do
-      {:ok, result |> Map.fetch!("system") |> Map.fetch!("get_sysinfo")}
-    end
-  end
-
-  @doc """
   Turns a switch on or off.
   """
   def set_relay_state(device, value) when is_boolean(value) do

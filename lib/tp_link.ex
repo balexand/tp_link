@@ -40,4 +40,17 @@ defmodule TpLink do
     opts = NimbleOptions.validate!(opts, @local_device_options_schema)
     %LocalDevice{host: ip_or_host, opts: opts}
   end
+
+  @doc """
+  Returns the system info.
+  """
+  def get_system_info(device) do
+    command = %{
+      system: %{get_sysinfo: nil}
+    }
+
+    with {:ok, result} <- TpLink.call(device, command) do
+      {:ok, result |> Map.fetch!("system") |> Map.fetch!("get_sysinfo")}
+    end
+  end
 end
