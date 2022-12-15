@@ -5,6 +5,9 @@ defmodule TpLink.Local.DiscoveryServer do
 
   Once discovered, a device will remain in the list indefinitely even if it goes offline. This may
   change in a future release of this library.
+
+  Errors may occur on certain version combinations of MacOS and Erlang/OTP. See [this
+  issue](https://github.com/balexand/tp_link/issues/27) for details.
   """
 
   use GenServer

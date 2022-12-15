@@ -17,6 +17,9 @@ defmodule TpLink.Local do
   @doc """
   Returns a list of devices on the local network. See `TpLink.Local.DiscoveryServer` for details.
 
+  Errors may occur on certain version combinations of MacOS and Erlang/OTP. See [this
+  issue](https://github.com/balexand/tp_link/issues/27) for details.
+
   ## Options
 
   #{NimbleOptions.docs(@list_devices_options_schema)}
