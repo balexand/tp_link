@@ -43,7 +43,7 @@ session
 
 ### Local network
 
-To list devices on the local network, call [`TpLink.Local.list_devices`](https://hexdocs.pm/tp_link/TpLink.Local.html#list_devices/1). There is no need to authenticate because TP-Link devices are not secure on the local network:
+To list devices on the local network using multicast UDP, call [`TpLink.Local.list_devices`](https://hexdocs.pm/tp_link/TpLink.Local.html#list_devices/1). There is no need to authenticate because TP-Link devices are not secure on the local network. If you experience errors on MacOS while listing devices then see [this issue](https://github.com/balexand/tp_link/issues/27).
 
 ```elixir
 {:ok, devices} = TpLink.Local.list_devices()
