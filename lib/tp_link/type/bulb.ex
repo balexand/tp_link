@@ -39,7 +39,6 @@ defmodule TpLink.Type.Bulb do
         {_key, _value} -> true
       end)
       |> Map.new()
-      |> IO.inspect()
 
     command = %{
       "smartlife.iot.smartbulb.lightingservice": %{
