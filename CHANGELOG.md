@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.3.0] - 2022-12-14
 ### Breaking
 - Deleted `TpLink.Type.Plug.get_system_info/1`. Replaced with `TpLink.get_system_info/1`.
 
