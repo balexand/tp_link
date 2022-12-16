@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2022-12-15
+### Added
+- Support for bulb `ignore_default` option
+
 ## [0.3.2] - 2022-12-15
 ### Changed
 - Docs
