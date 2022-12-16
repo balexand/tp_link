@@ -12,6 +12,9 @@ defmodule TpLink.Type.Bulb do
       type: {:in, 0..360},
       doc: "Hue (0-360)."
     ],
+    ignore_default: [
+      type: :boolean
+    ],
     on_off: [
       type: :boolean,
       doc: "Boolean to turn bulb on/off."
@@ -33,6 +36,7 @@ defmodule TpLink.Type.Bulb do
     light_state =
       opts
       |> NimbleOptions.validate!(@light_state_schema)
+      |> Keyword.update(:ignore_default, nil, &boolean_to_number/1)
       |> Keyword.update(:on_off, nil, &boolean_to_number/1)
       |> Enum.filter(fn
         {_key, nil} -> false
