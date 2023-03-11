@@ -38,7 +38,7 @@ defmodule TpLink.MixProject do
       {:elixir_uuid, "~> 1.2"},
       {:finch, "~> 0.10"},
       {:jason, "~> 1.3"},
-      {:nimble_options, "~> 0.3"},
+      {:nimble_options, "~> 0.3 or ~> 1.0"},
       {:recase, "~> 0.7"},
 
       # dev/test deps
