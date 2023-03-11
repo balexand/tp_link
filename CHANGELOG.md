@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.4.1] - 2023-03-11
+### Changed
+- Relax `nimble_options` version requirement
+
 ## [0.4.0] - 2022-12-15
 ### Added
 - Support for bulb `ignore_default` option
