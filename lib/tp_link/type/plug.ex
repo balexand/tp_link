@@ -16,6 +16,19 @@ defmodule TpLink.Type.Plug do
     end
   end
 
+  @doc """
+  Returns energy information for the device.
+  """
+  def get_energy_meter_information(device) do
+    command = %{
+      emeter: %{get_realtime: nil}
+    }
+
+    with {:ok, result} <- TpLink.call(device, command) do
+      {:ok, result |> Map.fetch!("emeter") |> Map.fetch!("get_realtime")}
+    end
+  end
+
   defp boolean_to_number(false), do: 0
   defp boolean_to_number(true), do: 1
 end
