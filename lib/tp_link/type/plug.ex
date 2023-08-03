@@ -4,6 +4,15 @@ defmodule TpLink.Type.Plug do
   """
 
   @doc """
+  Returns `{:ok, is_on}` or `{:error, error}`.
+  """
+  def on?(device) do
+    with {:ok, %{"relay_state" => relay_state}} <- TpLink.get_system_info(device) do
+      {:ok, number_to_boolean(relay_state)}
+    end
+  end
+
+  @doc """
   Turns a switch on or off.
   """
   def set_relay_state(device, value) when is_boolean(value) do
@@ -18,4 +27,7 @@ defmodule TpLink.Type.Plug do
 
   defp boolean_to_number(false), do: 0
   defp boolean_to_number(true), do: 1
+
+  defp number_to_boolean(0), do: false
+  defp number_to_boolean(1), do: true
 end
